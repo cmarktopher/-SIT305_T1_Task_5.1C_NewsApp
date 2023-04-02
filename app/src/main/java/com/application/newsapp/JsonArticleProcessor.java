@@ -41,6 +41,11 @@ public class JsonArticleProcessor implements IArticleHandler {
 
             for (int i = 0; i < articlesAsJsonStringLength; i++) {
 
+                // Slight note, I am currently using a placeholder vector image
+                // So, this information won't be through the json.
+                // Probably not a good way to do this but this is just for testing and the task.
+                // Future implementations of this would probably use a database or some kind of news API
+
                 JSONObject articleAsJson = articlesAsJson.getJSONObject(i);
                 newsArticles.add(
 
@@ -48,7 +53,8 @@ public class JsonArticleProcessor implements IArticleHandler {
                                 articleAsJson.getInt("ranking"),
                                 articleAsJson.getString("title"),
                                 articleAsJson.getString("date"),
-                                articleAsJson.getString("content")
+                                articleAsJson.getString("content"),
+                                R.drawable.baseline_article_24
                         )
                 );
             }

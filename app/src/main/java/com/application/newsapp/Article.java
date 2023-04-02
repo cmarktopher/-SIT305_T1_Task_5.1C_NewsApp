@@ -11,14 +11,15 @@ public class Article {
     private String title;
     private String date;
     private String content;
+    private int coverImage;
 
 
-
-    public Article(Integer ranking, String title, String date, String content) {
+    public Article(Integer ranking, String title, String date, String content, int coverImage) {
         this.ranking = ranking;
         this.title = title;
         this.date = date;
         this.content = content;
+        this.coverImage = coverImage;
     }
 
     public Integer getRanking() {return ranking;}
@@ -35,5 +36,7 @@ public class Article {
         return content;
     }
 
-
+    public int getCoverImage() {
+        return coverImage;
+    }
 }

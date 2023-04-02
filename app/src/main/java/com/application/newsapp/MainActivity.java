@@ -1,6 +1,9 @@
 package com.application.newsapp;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.Button;
@@ -40,20 +43,17 @@ public class MainActivity extends AppCompatActivity {
 
         setContentView(R.layout.activity_main);
 
+        // Get core UI elements
+        RecyclerView topStoriesRecyclerView = findViewById(R.id.topStoriesRecyclerView);
+
         // Get articles through whatever implementation we want.
         // For now, it will be the json based articles.
         articleHandler = new JsonArticleProcessor();
         newsArticles = articleHandler.GetAllArticles(this);
 
-        LinearLayout layout = findViewById(R.id.testVerticalLayout);
-
-        for (int i = 0; i < newsArticles.size(); i++) {
-
-            Button button = new Button(this);
-            button.setText(newsArticles.get(i).getTitle());
-            layout.addView(button);
-        }
+        // Attach the adapter to the recycler view
+        ArticleRecyclerAdapter articleRecycleAdapter = new ArticleRecyclerAdapter(this, newsArticles);
+        topStoriesRecyclerView.setAdapter(articleRecycleAdapter);
+        topStoriesRecyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
     }
-
-
 }
