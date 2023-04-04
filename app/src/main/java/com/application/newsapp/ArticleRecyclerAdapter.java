@@ -1,11 +1,17 @@
 package com.application.newsapp;
 
 import android.content.Context;
+import android.graphics.drawable.Drawable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
+import android.widget.Button;
+import android.widget.TextView;
+
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.content.res.AppCompatResources;
+import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
@@ -25,7 +31,7 @@ public class ArticleRecyclerAdapter extends RecyclerView.Adapter<ArticleRecycler
     public ArticleRecyclerAdapter.ArticleView onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
 
         LayoutInflater inflater = LayoutInflater.from(context);
-        View view = inflater.inflate(R.layout.article_card_image_only, parent, false);
+        View view = inflater.inflate(R.layout.article_view_card, parent, false);
 
         return new ArticleRecyclerAdapter.ArticleView(view);
     }
@@ -36,7 +42,23 @@ public class ArticleRecyclerAdapter extends RecyclerView.Adapter<ArticleRecycler
         // This is where we will update the view with the required information.
         // To my understanding, as views come into the screen, we can use the position to index
         // to get the required data for our articles array.
-        holder.getImageView().setImageResource(articles.get(position).getCoverImage());
+        Drawable articleImageAsVector = AppCompatResources.getDrawable(context.getApplicationContext(), articles.get(position).getCoverImage());
+
+        holder.getArticleButton().setBackground(articleImageAsVector);
+        holder.getArticleTitle().setText(articles.get(position).getTitle());
+
+        holder.getArticleButton().setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                FragmentManager fragmentManager = ((AppCompatActivity)context).getSupportFragmentManager();
+                fragmentManager.beginTransaction()
+                        .setReorderingAllowed(true)
+                        .replace(R.id.newsAppFragmentContainer, ArticleFragment.class, null)
+                        .addToBackStack("home")
+                        .commit();
+            }
+        });
 
     }
 
@@ -55,18 +77,22 @@ public class ArticleRecyclerAdapter extends RecyclerView.Adapter<ArticleRecycler
      */
     public static class ArticleView extends RecyclerView.ViewHolder {
 
-        private ImageView imageView;
+        private Button articleButton;
+        private TextView articleTitle;
 
         public ArticleView(@NonNull View itemView) {
 
             super(itemView);
 
             // Get the UI element references
-            imageView = itemView.findViewById(R.id.articleImageView);
+            articleButton = itemView.findViewById(R.id.articleButton);
+            articleTitle = itemView.findViewById(R.id.articleTitle);
         }
 
-        public ImageView getImageView() {
-            return imageView;
+        public Button getArticleButton() {
+            return articleButton;
         }
+
+        public TextView getArticleTitle() {return articleTitle;}
     }
 }

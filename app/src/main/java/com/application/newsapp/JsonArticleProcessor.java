@@ -9,14 +9,13 @@ import org.json.JSONObject;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.Collections;
 
 public class JsonArticleProcessor implements IArticleHandler {
 
+    private ArrayList<Article> newsArticles = new ArrayList<>();
 
-    @Override
-    public ArrayList<Article> GetAllArticles(Context context) {
-
-        ArrayList<Article> newsArticles = new ArrayList<>();
+    public JsonArticleProcessor(Context context) {
 
         String articleData = "";
 
@@ -59,6 +58,10 @@ public class JsonArticleProcessor implements IArticleHandler {
                 );
             }
 
+            // We might as well sort the articles here based on ranking
+            Collections.sort(newsArticles);
+
+
         } catch (IOException e) {
 
             throw new RuntimeException(e);
@@ -68,6 +71,27 @@ public class JsonArticleProcessor implements IArticleHandler {
             throw new RuntimeException(e);
         }
 
+    }
+
+    @Override
+    public ArrayList<Article> GetAllArticles() {
+
         return newsArticles;
+    }
+
+    @Override
+    public ArrayList<Article> GetTopRankedArticles(Integer numberOfArticles) {
+
+        ArrayList<Article> topArticles = new ArrayList<>(numberOfArticles);
+
+        // Probably a better way to do this but I'll simply loop through the number of articles we required based on the parameter and add them to the new collection.
+        // These articles are also already sorted with higher ranking articles appearing at the front of the collection.
+        for (int i = 0; i < numberOfArticles; i++) {
+
+            topArticles.add(newsArticles.get(i));
+
+        }
+
+        return topArticles;
     }
 }

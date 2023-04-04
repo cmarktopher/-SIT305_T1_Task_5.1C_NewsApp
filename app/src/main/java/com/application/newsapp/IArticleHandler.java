@@ -6,6 +6,6 @@ import java.util.ArrayList;
 
 public interface IArticleHandler {
 
-    ArrayList<Article> GetAllArticles(Context context);
-
+    ArrayList<Article> GetAllArticles();
+    ArrayList<Article> GetTopRankedArticles(Integer numberOfArticles);
 }
