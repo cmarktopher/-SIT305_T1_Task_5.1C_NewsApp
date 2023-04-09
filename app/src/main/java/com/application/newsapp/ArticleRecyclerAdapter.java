@@ -18,12 +18,14 @@ import java.util.ArrayList;
 
 public class ArticleRecyclerAdapter extends RecyclerView.Adapter<ArticleRecyclerAdapter.ArticleView> {
 
-    private Context context;
-    private ArrayList<Article> articles;
+    private final Context context;
+    private final ArrayList<Article> articles;
+    private IArticleHandler articleHandler;
 
-    public ArticleRecyclerAdapter(Context context, ArrayList<Article> articles) {
+    public ArticleRecyclerAdapter(Context context, ArrayList<Article> articles, IArticleHandler articleHandler) {
         this.context = context;
         this.articles = articles;
+        this.articleHandler = articleHandler;
     }
 
     @NonNull
@@ -33,7 +35,7 @@ public class ArticleRecyclerAdapter extends RecyclerView.Adapter<ArticleRecycler
         LayoutInflater inflater = LayoutInflater.from(context);
         View view = inflater.inflate(R.layout.article_view_card, parent, false);
 
-        return new ArticleRecyclerAdapter.ArticleView(view);
+        return new ArticleView(view);
     }
 
     @Override
@@ -51,10 +53,12 @@ public class ArticleRecyclerAdapter extends RecyclerView.Adapter<ArticleRecycler
             @Override
             public void onClick(View view) {
 
+                // Move to new fragment
                 FragmentManager fragmentManager = ((AppCompatActivity)context).getSupportFragmentManager();
                 fragmentManager.beginTransaction()
+                        .setCustomAnimations(R.anim.slide_in, R.anim.fade_out)
                         .setReorderingAllowed(true)
-                        .replace(R.id.newsAppFragmentContainer, ArticleFragment.class, null)
+                        .replace(R.id.newsAppFragmentContainer, ArticleFragment.newInstance(articles.get(holder.getAdapterPosition()), articleHandler), null)
                         .addToBackStack("home")
                         .commit();
             }
@@ -75,10 +79,10 @@ public class ArticleRecyclerAdapter extends RecyclerView.Adapter<ArticleRecycler
     /**
      * This is essentially going to be our view for the article card
      */
-    public static class ArticleView extends RecyclerView.ViewHolder {
+    public class ArticleView extends RecyclerView.ViewHolder {
 
-        private Button articleButton;
-        private TextView articleTitle;
+        private final Button articleButton;
+        private final TextView articleTitle;
 
         public ArticleView(@NonNull View itemView) {
 

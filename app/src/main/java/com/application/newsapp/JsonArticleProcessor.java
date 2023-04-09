@@ -11,9 +11,9 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Collections;
 
-public class JsonArticleProcessor implements IArticleHandler {
+public class JsonArticleProcessor implements IArticleHandler{
 
-    private ArrayList<Article> newsArticles = new ArrayList<>();
+    private static ArrayList<Article> newsArticles = new ArrayList<>();
 
     public JsonArticleProcessor(Context context) {
 
@@ -46,14 +46,27 @@ public class JsonArticleProcessor implements IArticleHandler {
                 // Future implementations of this would probably use a database or some kind of news API
 
                 JSONObject articleAsJson = articlesAsJson.getJSONObject(i);
+
+                // Just doing a quick way to get the integer array out of the json - I'm sure there's a better way to do this
+                JSONArray relatedArticlesIdsAsJson = articleAsJson.getJSONArray("related_articles");
+                int[] relatedArticlesIds = new int[relatedArticlesIdsAsJson.length()];
+
+                for (int j = 0; j < relatedArticlesIdsAsJson.length(); j++) {
+
+                    relatedArticlesIds[j] = relatedArticlesIdsAsJson.getInt(j);
+                }
+
+                // Now, we can add our articles based on the data
                 newsArticles.add(
 
                         new Article(
+                                articleAsJson.getInt("id"),
                                 articleAsJson.getInt("ranking"),
                                 articleAsJson.getString("title"),
                                 articleAsJson.getString("date"),
                                 articleAsJson.getString("content"),
-                                R.drawable.baseline_article_24
+                                R.drawable.baseline_article_24,
+                                relatedArticlesIds
                         )
                 );
             }

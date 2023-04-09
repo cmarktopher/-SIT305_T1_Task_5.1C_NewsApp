@@ -1,12 +1,17 @@
 package com.application.newsapp;
 
 import android.os.Bundle;
-
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.TextView;
+
+import java.util.ArrayList;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -15,43 +20,33 @@ import android.view.ViewGroup;
  */
 public class ArticleFragment extends Fragment {
 
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
-
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
+    private static final String ARG_PARAM1 = "ArticleData";
+    private static final String ARG_PARAM2 = "ArticleHandler";
+    private Article article;
 
     public ArticleFragment() {
         // Required empty public constructor
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment ArticleFragment.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static ArticleFragment newInstance(String param1, String param2) {
+    public static ArticleFragment newInstance(Article article, IArticleHandler articleHandler) {
         ArticleFragment fragment = new ArticleFragment();
+
         Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
+        args.putParcelable(ARG_PARAM1, article);
+        args.putParcelable(ARG_PARAM2, articleHandler);
+
         fragment.setArguments(args);
+
         return fragment;
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
+
         if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
+            article = getArguments().getParcelable(ARG_PARAM1);
         }
     }
 
@@ -59,9 +54,41 @@ public class ArticleFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
+        View view = inflater.inflate(R.layout.fragment_article, container, false);
 
+        // Get core elements
+        ImageView articleFragmentImage = view.findViewById(R.id.articleFragmentImage);
+        TextView articleFragmentTitle = view.findViewById(R.id.articleFragmentTitle);
+        TextView articleFragmentContent = view.findViewById(R.id.articleFragmentContent);
+        RecyclerView relatedArticlesRecyclerView = view.findViewById(R.id.articleFragmentRelatedRecycler);
+
+        // Set the properties
+        articleFragmentImage.setImageResource(article.getCoverImage());
+        articleFragmentTitle.setText(article.getTitle());
+        articleFragmentContent.setText(article.getContent());
+
+        // Lets create an ArrayList of articles based on the ids of related articles
+        ArrayList<Article> allArticles = HomeFragment.getAllArticles();
+        ArrayList<Article> relatedArticles = new ArrayList<>();
+
+        // As per the whole using static all articles thing, this whole thing could be handled better.
+        for (int i = 0; i < article.getRelatedArticleIds().length; i++) {
+
+            for (int j = 0; j < allArticles.size(); j++) {
+
+                if (allArticles.get(j).getId() == article.getRelatedArticleIds()[i]){
+
+                    relatedArticles.add(allArticles.get(j));
+                }
+            }
+        }
+
+        // Create our recycler view
+        ArticleRecyclerAdapter relatedArticlesRecycleAdapter = new ArticleRecyclerAdapter(getContext(), relatedArticles);
+        relatedArticlesRecyclerView.setAdapter(relatedArticlesRecycleAdapter);
+        relatedArticlesRecyclerView.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
 
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_article, container, false);
+        return view;
     }
 }

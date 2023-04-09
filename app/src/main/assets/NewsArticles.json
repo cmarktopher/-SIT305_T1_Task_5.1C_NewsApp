@@ -1,62 +1,83 @@
 [
     {
+        "id": 1,
         "ranking": 45,
         "title": "Article 1",
         "date": "2022-08-23",
-        "content": "Here is article 1's content."
+        "content": "Here is article 1's content.",
+        "related_articles": [4, 5, 6]
+        
     },
     {
+        "id": 2,
         "ranking": 20,
         "title": "Article 2",
         "date": "2022-08-28",
-        "content": "Here is article 2's content."
+        "content": "Here is article 2's content.",
+        "related_articles": [1, 3]
     },
     {
+        "id": 3,
         "ranking": 2,
         "title": "Article 3",
         "date": "2022-09-02",
-        "content": "Here is article 3's content."
+        "content": "Here is article 3's content.",
+        "related_articles": [4, 5, 6, 10]
     },
     {
+        "id": 4,
         "ranking": 50,
         "title": "Article 4",
         "date": "2022-09-05",
-        "content": "Here is article 4's content."
+        "content": "Here is article 4's content.",
+        "related_articles": [1, 2, 7]
     },
     {
+        "id": 5,
         "ranking": 35,
         "title": "Article 5",
         "date": "2022-09-10",
-        "content": "Here is article 5's content."
+        "content": "Here is article 5's content.",
+        "related_articles": [6]
     },
     {
+        "id": 6,
         "ranking": 65,
         "title": "Article 6",
         "date": "2022-08-15",
-        "content": "Here is article 6's content."
+        "content": "Here is article 6's content.",
+        "related_articles": [1, 2, 3, 4]
     },
     {
+        "id": 7,
         "ranking": 70,
         "title": "Article 7",
         "date": "2022-08-02",
-        "content": "Here is article 7's content."
+        "content": "Here is article 7's content.",
+        "related_articles": [4, 5, 6]
     },
     {
+        "id": 8,
         "ranking": 10,
         "title": "Article 8",
         "date": "2022-10-10",
-        "content": "Here is article 8's content."
+        "content": "Here is article 8's content.",
+        "related_articles": [4, 5, 6]
     },
     {
+        "id": 9,
         "ranking": 1,
         "title": "Article 9",
         "date": "2022-10-15",
-        "content": "Here is article 9's content."
+        "content": "Here is article 9's content.",
+        "related_articles": [4, 5, 6]
     },
     {
+        "id": 10,
         "ranking": 26,
         "title": "Article 10",
         "date": "2022-08-27",
-        "content": "Here is article 10's content."
+        "content": "Here is article 10's content.",
+        "related_articles": [4, 5, 6]
     }
 ]

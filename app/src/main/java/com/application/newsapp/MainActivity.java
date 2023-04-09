@@ -36,6 +36,6 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        // Since we are loading the home page (top stories and all news via) via the fragment container, we don't actually need to do anything here since the fragment containsd all the logic there.
+        // Since we are loading the home page (top stories and all news via) via the fragment container, we don't actually need to do anything here since the fragment contained all the logic there.
     }
 }
