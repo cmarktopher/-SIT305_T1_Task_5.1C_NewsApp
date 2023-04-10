@@ -1,4 +1,4 @@
-package com.application.newsapp;
+package com.application.newsapp.RecyclerAdapters;
 
 import android.content.Context;
 import android.graphics.drawable.Drawable;
@@ -14,15 +14,20 @@ import androidx.appcompat.content.res.AppCompatResources;
 import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.application.newsapp.DataModels.Article;
+import com.application.newsapp.Fragments.ArticleFragment;
+import com.application.newsapp.DataAccess.IArticleDataAccess;
+import com.application.newsapp.R;
+
 import java.util.ArrayList;
 
 public class ArticleRecyclerAdapter extends RecyclerView.Adapter<ArticleRecyclerAdapter.ArticleView> {
 
     private final Context context;
     private final ArrayList<Article> articles;
-    private IArticleHandler articleHandler;
+    private IArticleDataAccess articleHandler;
 
-    public ArticleRecyclerAdapter(Context context, ArrayList<Article> articles, IArticleHandler articleHandler) {
+    public ArticleRecyclerAdapter(Context context, ArrayList<Article> articles) {
         this.context = context;
         this.articles = articles;
         this.articleHandler = articleHandler;
@@ -58,8 +63,7 @@ public class ArticleRecyclerAdapter extends RecyclerView.Adapter<ArticleRecycler
                 fragmentManager.beginTransaction()
                         .setCustomAnimations(R.anim.slide_in, R.anim.fade_out)
                         .setReorderingAllowed(true)
-                        .replace(R.id.newsAppFragmentContainer, ArticleFragment.newInstance(articles.get(holder.getAdapterPosition()), articleHandler), null)
-                        .addToBackStack("home")
+                        .replace(R.id.newsAppFragmentContainer, ArticleFragment.newInstance(articles.get(holder.getAdapterPosition())), null)
                         .commit();
             }
         });

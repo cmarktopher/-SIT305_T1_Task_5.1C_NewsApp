@@ -1,21 +1,14 @@
 package com.application.newsapp;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
+import androidx.lifecycle.ViewModelProvider;
 
 import android.os.Bundle;
-import android.util.Log;
-import android.widget.Button;
-import android.widget.LinearLayout;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.ArrayList;
+import com.application.newsapp.DataAccess.IArticleDataAccess;
+import com.application.newsapp.DataAccess.JsonArticleDataAccess;
+import com.application.newsapp.Fragments.HomeFragment;
+import com.application.newsapp.ViewModels.ArticleDataAccessViewModel;
 
 /**
  * Just a couple of notes about this entire application.
@@ -36,6 +29,21 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        // Since we are loading the home page (top stories and all news via) via the fragment container, we don't actually need to do anything here since the fragment contained all the logic there.
+        // We need a data access object
+        IArticleDataAccess dataAccess = new JsonArticleDataAccess(getApplicationContext());
+
+        // We want to pass in our data access object to our view model so that it can be shared across all fragments
+        // The good thing here is that if I ever change the data access object, I can simply make one change here, and not change anything else (well, ideally).
+        // There is probably a better way of using the view model, but sticking with a simple approach for now (I don't think there will be any issues doing it this way)
+        ArticleDataAccessViewModel articleViewModel = new ViewModelProvider(this).get(ArticleDataAccessViewModel.class);
+        articleViewModel.setDataAccess(dataAccess);
+
+        // Now, lets move into the fragment.
+        getSupportFragmentManager().beginTransaction()
+                .setCustomAnimations(R.anim.slide_in, R.anim.fade_out)
+                .setReorderingAllowed(true)
+                .replace(R.id.newsAppFragmentContainer, HomeFragment.newInstance(), null)
+                .addToBackStack(null)
+                .commit();
     }
 }

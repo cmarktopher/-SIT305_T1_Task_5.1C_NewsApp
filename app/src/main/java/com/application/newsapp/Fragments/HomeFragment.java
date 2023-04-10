@@ -1,32 +1,26 @@
-package com.application.newsapp;
+package com.application.newsapp.Fragments;
 
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
-import android.widget.Toast;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
+import com.application.newsapp.RecyclerAdapters.ArticleRecyclerAdapter;
+import com.application.newsapp.DataAccess.IArticleDataAccess;
+import com.application.newsapp.R;
+import com.application.newsapp.ViewModels.ArticleDataAccessViewModel;
 
 /**
- * A simple {@link Fragment} subclass.
- * Use the {@link HomeFragment#newInstance} factory method to
- * create an instance of this fragment.
+ * This activity will be for the home page and will show top articles and all articles.
  */
 public class HomeFragment extends Fragment {
-
-    // Handler to get articles
-    private IArticleHandler articleHandler;
 
     public HomeFragment() {
 
@@ -36,8 +30,6 @@ public class HomeFragment extends Fragment {
     public static HomeFragment newInstance() {
 
         HomeFragment fragment = new HomeFragment();
-        Bundle args = new Bundle();
-        fragment.setArguments(args);
         return fragment;
     }
 
@@ -45,10 +37,6 @@ public class HomeFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
-
-        // Get articles through whatever implementation we want.
-        // For now, it will be the json based articles.
-        articleHandler = new JsonArticleProcessor(getContext());
     }
 
     @Override
@@ -61,15 +49,19 @@ public class HomeFragment extends Fragment {
         RecyclerView topStoriesRecyclerView = view.findViewById(R.id.topStoriesRecyclerView);
         RecyclerView allStoriesRecyclerView = view.findViewById(R.id.allStoriesRecyclerView);
 
+        // For this to work, we need to get our view model that contains the reference to the data access interface.
+        ArticleDataAccessViewModel articleDataAccessViewModel = new ViewModelProvider(requireActivity()).get(ArticleDataAccessViewModel.class);
+        IArticleDataAccess articleDataAccess = articleDataAccessViewModel.getArticleDataAccess().getValue();
+
         // We need to create two separate recycler views. One for top stories and one for all stories.
         // The recycle view implementation will be the same and we can just use two different Array Lists.
         // One array list will contain all articles, and the other will contain the top stories (I'll just do 5 for now based on ranking number)
 
         // Top stories
-        ArticleRecyclerAdapter topStoriesRecycleAdapter = new ArticleRecyclerAdapter(getContext(), articleHandler.GetTopRankedArticles(5));
+        ArticleRecyclerAdapter topStoriesRecycleAdapter = new ArticleRecyclerAdapter(getContext(), articleDataAccess.GetTopRankedArticles(5));
 
         // All articles
-        ArticleRecyclerAdapter allArticlesRecycleAdapter = new ArticleRecyclerAdapter(getContext(), articleHandler.GetAllArticles());
+        ArticleRecyclerAdapter allArticlesRecycleAdapter = new ArticleRecyclerAdapter(getContext(), articleDataAccess.GetAllArticles());
 
         // Attach the adapter to the recycler views
         topStoriesRecyclerView.setAdapter(topStoriesRecycleAdapter);

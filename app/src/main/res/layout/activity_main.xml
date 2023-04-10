@@ -8,7 +8,7 @@
 
     <androidx.fragment.app.FragmentContainerView
         android:id="@+id/newsAppFragmentContainer"
-        android:name="com.application.newsapp.HomeFragment"
+        android:name="com.application.newsapp.Fragments.HomeFragment"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:layout_constraintBottom_toBottomOf="parent"

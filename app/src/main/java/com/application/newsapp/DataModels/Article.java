@@ -1,12 +1,10 @@
-package com.application.newsapp;
+package com.application.newsapp.DataModels;
 
-import android.graphics.drawable.Drawable;
+import android.media.Image;
 import android.os.Parcel;
 import android.os.Parcelable;
 
 import androidx.annotation.NonNull;
-
-import java.util.Comparator;
 
 /**
  * This will be our news/article object that will hold all information required for a given news article.
@@ -63,6 +61,14 @@ public class Article implements Comparable<Article>, Parcelable {
         return coverImage;
     }
 
+    public Integer getId() {
+        return id;
+    }
+
+    public int[] getRelatedArticleIds() {
+        return relatedArticleIds;
+    }
+
     /**
      * The following methods are required for the Comparable interface
      */
@@ -113,12 +119,4 @@ public class Article implements Comparable<Article>, Parcelable {
             return new Article[size];
         }
     };
-
-    public Integer getId() {
-        return id;
-    }
-
-    public int[] getRelatedArticleIds() {
-        return relatedArticleIds;
-    }
 }

@@ -1,11 +1,10 @@
-package com.application.newsapp;
+package com.application.newsapp.DataAccess;
 
-import android.content.Context;
-import android.os.Parcelable;
+import com.application.newsapp.DataModels.Article;
 
 import java.util.ArrayList;
 
-public interface IArticleHandler{
+public interface IArticleDataAccess {
 
     ArrayList<Article> GetAllArticles();
     ArrayList<Article> GetTopRankedArticles(Integer numberOfArticles);

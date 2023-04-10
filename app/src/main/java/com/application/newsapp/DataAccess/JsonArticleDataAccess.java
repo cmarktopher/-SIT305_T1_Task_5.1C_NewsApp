@@ -1,6 +1,9 @@
-package com.application.newsapp;
+package com.application.newsapp.DataAccess;
 
 import android.content.Context;
+
+import com.application.newsapp.DataModels.Article;
+import com.application.newsapp.R;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -11,11 +14,11 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Collections;
 
-public class JsonArticleProcessor implements IArticleHandler{
+public class JsonArticleDataAccess implements IArticleDataAccess {
 
-    private static ArrayList<Article> newsArticles = new ArrayList<>();
+    private ArrayList<Article> newsArticles = new ArrayList<>();
 
-    public JsonArticleProcessor(Context context) {
+    public JsonArticleDataAccess(Context context) {
 
         String articleData = "";
 
